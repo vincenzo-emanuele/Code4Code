@@ -2,9 +2,9 @@ package testDaily;
 
 import java.io.Serializable;
 
-public class Properties implements Serializable {
+public class CreateRoomBody implements Serializable {
 
-    public Properties(String name, String privacy) {
+    public CreateRoomBody(String name, String privacy) {
         this.name = name;
         this.privacy = privacy;
     }
@@ -27,8 +27,10 @@ public class Properties implements Serializable {
 
     @Override
     public String toString() {
-        return "name='" + name + '\'' +
-                ", privacy='" + privacy + '\'';
+        return "CreateRoomBody{" +
+                "name='" + name + '\'' +
+                ", privacy='" + privacy + '\'' +
+                '}';
     }
 
     private String name;
