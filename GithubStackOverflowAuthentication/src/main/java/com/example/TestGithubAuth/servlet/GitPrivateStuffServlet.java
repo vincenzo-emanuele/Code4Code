@@ -45,7 +45,6 @@ public class GitPrivateStuffServlet extends HttpServlet {
         String jsonRepos = "";
         String token = (String) request.getSession().getAttribute("token");
         Gson g = new Gson();
-        System.out.println("Sono qua");
         try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
 
             Map<String, String> env = System.getenv();
