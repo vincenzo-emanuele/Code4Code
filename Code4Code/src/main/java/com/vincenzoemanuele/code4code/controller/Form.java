@@ -4,6 +4,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 
 public class Form {
 
+    public Form(){
+
+    }
+
     public Form(boolean assembly, boolean bash, boolean batch, boolean CSharp, boolean cpp, boolean c, boolean CSS, boolean go, boolean groovy, boolean hack, boolean HTML, boolean java, boolean javaScript, boolean kotlin, boolean lua, boolean objectiveC, boolean perl, boolean PHP, boolean powerShell, boolean python, boolean ruby, boolean SQL, boolean swift, boolean teX, boolean typeScript) {
         Assembly = assembly;
         Bash = bash;

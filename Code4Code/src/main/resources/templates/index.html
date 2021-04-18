@@ -24,7 +24,7 @@
 </header>
 
 <div class="container border mx-auto my-5">
-    <form method="get" th:action="@{suggest}">
+    <form method="get" th:action="@{/suggest}" th:object="${form}">
         <div class="container">
             <div class="row mt-2 mb-2">
                 <div class="col-3">
@@ -42,7 +42,7 @@
                             </div>
                             <div class="col-3 align-self-center">
                                 <div class="card-body">
-                                    <input class="form-check-input ms-auto me-auto" type="checkbox" value="" id="Assembly">
+                                    <input th:field="*{Assembly}" class="form-check-input ms-auto me-auto" type="checkbox" value="" id="Assembly">
                                 </div>
                             </div>
                         </div>
@@ -63,7 +63,7 @@
                             </div>
                             <div class="col-3 align-self-center">
                                 <div class="card-body">
-                                    <input class="form-check-input ms-auto me-auto" type="checkbox" value="" id="Bash">
+                                    <input th:field="*{Bash}" class="form-check-input ms-auto me-auto" type="checkbox" value="" id="Bash">
                                 </div>
                             </div>
                         </div>
@@ -84,7 +84,7 @@
                             </div>
                             <div class="col-3 align-self-center">
                                 <div class="card-body">
-                                    <input class="form-check-input ms-auto me-auto" type="checkbox" value="" id="Batch">
+                                    <input th:field="*{Batch}" class="form-check-input ms-auto me-auto" type="checkbox" value="" id="Batch">
                                 </div>
                             </div>
                         </div>
@@ -105,7 +105,7 @@
                             </div>
                             <div class="col-3 align-self-center">
                                 <div class="card-body">
-                                    <input class="form-check-input ms-auto me-auto" type="checkbox" value="" id="C#">
+                                    <input th:field="*{CSharp}" class="form-check-input ms-auto me-auto" type="checkbox" value="" id="C#">
                                 </div>
                             </div>
                         </div>
@@ -128,7 +128,7 @@
                             </div>
                             <div class="col-3 align-self-center">
                                 <div class="card-body">
-                                    <input class="form-check-input ms-auto me-auto" type="checkbox" value="" id="C++">
+                                    <input th:field="*{Cpp}" class="form-check-input ms-auto me-auto" type="checkbox" value="" id="C++">
                                 </div>
                             </div>
                         </div>
@@ -149,7 +149,7 @@
                             </div>
                             <div class="col-3 align-self-center">
                                 <div class="card-body">
-                                    <input class="form-check-input ms-auto me-auto" type="checkbox" value="" id="C">
+                                    <input th:field="*{C}" class="form-check-input ms-auto me-auto" type="checkbox" value="" id="C">
                                 </div>
                             </div>
                         </div>
@@ -170,7 +170,7 @@
                             </div>
                             <div class="col-3 align-self-center">
                                 <div class="card-body">
-                                    <input class="form-check-input ms-auto me-auto" type="checkbox" value="" id="CSS">
+                                    <input th:field="*{CSS}" class="form-check-input ms-auto me-auto" type="checkbox" value="" id="CSS">
                                 </div>
                             </div>
                         </div>
@@ -191,7 +191,7 @@
                             </div>
                             <div class="col-3 align-self-center">
                                 <div class="card-body">
-                                    <input class="form-check-input ms-auto me-auto" type="checkbox" value="" id="Go">
+                                    <input th:field="*{Go}" class="form-check-input ms-auto me-auto" type="checkbox" value="" id="Go">
                                 </div>
                             </div>
                         </div>
@@ -214,7 +214,7 @@
                             </div>
                             <div class="col-3 align-self-center">
                                 <div class="card-body">
-                                    <input class="form-check-input ms-auto me-auto" type="checkbox" value="" id="Groovy">
+                                    <input th:field="*{Groovy}" class="form-check-input ms-auto me-auto" type="checkbox" value="" id="Groovy">
                                 </div>
                             </div>
                         </div>
@@ -235,7 +235,7 @@
                             </div>
                             <div class="col-3 align-self-center">
                                 <div class="card-body">
-                                    <input class="form-check-input ms-auto me-auto" type="checkbox" value="" id="Hack">
+                                    <input th:field="*{Hack}" class="form-check-input ms-auto me-auto" type="checkbox" value="" id="Hack">
                                 </div>
                             </div>
                         </div>
@@ -256,7 +256,7 @@
                             </div>
                             <div class="col-3 align-self-center">
                                 <div class="card-body">
-                                    <input class="form-check-input ms-auto me-auto" type="checkbox" value="" id="HTML">
+                                    <input th:field="*{HTML}" class="form-check-input ms-auto me-auto" type="checkbox" value="" id="HTML">
                                 </div>
                             </div>
                         </div>
@@ -277,7 +277,7 @@
                             </div>
                             <div class="col-3 align-self-center">
                                 <div class="card-body">
-                                    <input class="form-check-input ms-auto me-auto" type="checkbox" value="" id="Java">
+                                    <input th:field="*{Java}" class="form-check-input ms-auto me-auto" type="checkbox" value="" id="Java">
                                 </div>
                             </div>
                         </div>
@@ -300,7 +300,7 @@
                             </div>
                             <div class="col-3 align-self-center">
                                 <div class="card-body">
-                                    <input class="form-check-input ms-auto me-auto" type="checkbox" value="" id="JavaScript">
+                                    <input th:field="*{JavaScript}" class="form-check-input ms-auto me-auto" type="checkbox" value="" id="JavaScript">
                                 </div>
                             </div>
                         </div>
@@ -321,7 +321,7 @@
                             </div>
                             <div class="col-3 align-self-center">
                                 <div class="card-body">
-                                    <input class="form-check-input ms-auto me-auto" type="checkbox" value="" id="Kotlin">
+                                    <input th:field="*{Kotlin}" class="form-check-input ms-auto me-auto" type="checkbox" value="" id="Kotlin">
                                 </div>
                             </div>
                         </div>
@@ -342,7 +342,7 @@
                             </div>
                             <div class="col-3 align-self-center">
                                 <div class="card-body">
-                                    <input class="form-check-input ms-auto me-auto" type="checkbox" value="" id="Lua">
+                                    <input th:field="*{Lua}" class="form-check-input ms-auto me-auto" type="checkbox" value="" id="Lua">
                                 </div>
                             </div>
                         </div>
@@ -363,7 +363,7 @@
                             </div>
                             <div class="col-3 align-self-center">
                                 <div class="card-body">
-                                    <input class="form-check-input ms-auto me-auto" type="checkbox" value="" id="Objective-C">
+                                    <input th:field="*{ObjectiveC}" class="form-check-input ms-auto me-auto" type="checkbox" value="" id="Objective-C">
                                 </div>
                             </div>
                         </div>
@@ -386,7 +386,7 @@
                             </div>
                             <div class="col-3 align-self-center">
                                 <div class="card-body">
-                                    <input class="form-check-input ms-auto me-auto" type="checkbox" value="" id="Perl">
+                                    <input th:field="*{Perl}" class="form-check-input ms-auto me-auto" type="checkbox" value="" id="Perl">
                                 </div>
                             </div>
                         </div>
@@ -407,7 +407,7 @@
                             </div>
                             <div class="col-3 align-self-center">
                                 <div class="card-body">
-                                    <input class="form-check-input ms-auto me-auto" type="checkbox" value="" id="PHP">
+                                    <input th:field="*{PHP}" class="form-check-input ms-auto me-auto" type="checkbox" value="" id="PHP">
                                 </div>
                             </div>
                         </div>
@@ -428,7 +428,7 @@
                             </div>
                             <div class="col-3 align-self-center">
                                 <div class="card-body">
-                                    <input class="form-check-input ms-auto me-auto" type="checkbox" value="" id="PowerShell">
+                                    <input th:field="*{PowerShell}" class="form-check-input ms-auto me-auto" type="checkbox" value="" id="PowerShell">
                                 </div>
                             </div>
                         </div>
@@ -449,7 +449,7 @@
                             </div>
                             <div class="col-3 align-self-center">
                                 <div class="card-body">
-                                    <input class="form-check-input ms-auto me-auto" type="checkbox" value="" id="Python">
+                                    <input th:field="*{Python}" class="form-check-input ms-auto me-auto" type="checkbox" value="" id="Python">
                                 </div>
                             </div>
                         </div>
@@ -472,7 +472,7 @@
                             </div>
                             <div class="col-3 align-self-center">
                                 <div class="card-body">
-                                    <input class="form-check-input ms-auto me-auto" type="checkbox" value="" id="Ruby">
+                                    <input th:field="*{Ruby}" class="form-check-input ms-auto me-auto" type="checkbox" value="" id="Ruby">
                                 </div>
                             </div>
                         </div>
@@ -493,7 +493,7 @@
                             </div>
                             <div class="col-3 align-self-center">
                                 <div class="card-body">
-                                    <input class="form-check-input ms-auto me-auto" type="checkbox" value="" id="SQL">
+                                    <input th:field="*{SQL}" class="form-check-input ms-auto me-auto" type="checkbox" value="" id="SQL">
                                 </div>
                             </div>
                         </div>
@@ -514,7 +514,7 @@
                             </div>
                             <div class="col-3 align-self-center">
                                 <div class="card-body">
-                                    <input class="form-check-input ms-auto me-auto" type="checkbox" value="" id="Swift">
+                                    <input th:field="*{Swift}" class="form-check-input ms-auto me-auto" type="checkbox" value="" id="Swift">
                                 </div>
                             </div>
                         </div>
@@ -535,7 +535,7 @@
                             </div>
                             <div class="col-3 align-self-center">
                                 <div class="card-body">
-                                    <input class="form-check-input ms-auto me-auto" type="checkbox" value="" id="TeX">
+                                    <input th:field="*{TeX}" class="form-check-input ms-auto me-auto" type="checkbox" value="" id="TeX">
                                 </div>
                             </div>
                         </div>
@@ -558,7 +558,7 @@
                             </div>
                             <div class="col-3 align-self-center">
                                 <div class="card-body">
-                                    <input class="form-check-input ms-auto me-auto" type="checkbox" value="" id="TypeScript">
+                                    <input th:field="*{TypeScript}" class="form-check-input ms-auto me-auto" type="checkbox" value="" id="TypeScript">
                                 </div>
                             </div>
                         </div>
