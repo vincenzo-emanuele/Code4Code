@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:form="http://www.springframework.org/tags/form">
+<head>
+    <meta charset="UTF-8">
+    <title>Form</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <link href="/css/style.css" rel="stylesheet" />
+    <style>
+
+        .img-custom{
+            width: 80px;
+            height: 80px;
+        }
+
+
+        .checkbox-custom{
+            width: 20px;
+            height: 20px;
+        }
+    </style>
+</head>
+<body>
+<header th:replace="/components/_navbar :: navbar">
+</header>
+
+<div class="container border mx-auto my-5">
+    <form method="get" th:action="@{suggest}">
+        <div class="container">
+            <div class="row mt-2 mb-2">
+                <div class="col-3">
+                    <div class="card card-custom justify-content-md-center mb-2">
+                        <div class="row">
+                            <div class="col-3 align-self-center">
+                                <img th:src="@{images/Assembly.jpg}" style="padding:2px;" class="img-custom" alt="...">
+                            </div>
+                            <div class="col-6 align-self-center">
+                                <div class="card-body text-center">
+                                    <label class="form-check-label" for="Assembly">
+                                        Assembly
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-3 align-self-center">
+                                <div class="card-body">
+                                    <input class="form-check-input ms-auto me-auto" type="checkbox" value="" id="Assembly">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="card card-custom justify-content-md-center mb-2">
+                        <div class="row">
+                            <div class="col-3 align-self-center">
+                                <img th:src="@{images/Bash.jpg}" style="padding:2px;" class="img-custom" alt="...">
+                            </div>
+                            <div class="col-6 align-self-center">
+                                <div class="card-body text-center">
+                                    <label class="form-check-label" for="Bash">
+                                        Bash
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-3 align-self-center">
+                                <div class="card-body">
+                                    <input class="form-check-input ms-auto me-auto" type="checkbox" value="" id="Bash">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="card card-custom justify-content-md-center mb-2">
+                        <div class="row">
+                            <div class="col-3 align-self-center">
+                                <img th:src="@{images/Batch.jpg}" style="padding:2px;" class="img-custom" alt="...">
+                            </div>
+                            <div class="col-6 align-self-center">
+                                <div class="card-body text-center">
+                                    <label class="form-check-label" for="Batch">
+                                        Batch
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-3 align-self-center">
+                                <div class="card-body">
+                                    <input class="form-check-input ms-auto me-auto" type="checkbox" value="" id="Batch">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="card card-custom justify-content-md-center mb-2">
+                        <div class="row">
+                            <div class="col-3 align-self-center">
+                                <img th:src="@{images/CSharp.jpg}" style="padding:2px;" class="img-custom" alt="...">
+                            </div>
+                            <div class="col-6 align-self-center">
+                                <div class="card-body text-center">
+                                    <label class="form-check-label" for="C#">
+                                        C#
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-3 align-self-center">
+                                <div class="card-body">
+                                    <input class="form-check-input ms-auto me-auto" type="checkbox" value="" id="C#">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-2 mb-2">
+                <div class="col-3">
+                    <div class="card card-custom justify-content-md-center mb-2">
+                        <div class="row">
+                            <div class="col-3 align-self-center">
+                                <img th:src="@{images/Cpp.jpg}" style="padding:2px;" class="img-custom" alt="...">
+                            </div>
+                            <div class="col-6 align-self-center">
+                                <div class="card-body text-center">
+                                    <label class="form-check-label" for="C++">
+                                        C++
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-3 align-self-center">
+                                <div class="card-body">
+                                    <input class="form-check-input ms-auto me-auto" type="checkbox" value="" id="C++">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="card card-custom justify-content-md-center mb-2">
+                        <div class="row">
+                            <div class="col-3 align-self-center">
+                                <img th:src="@{images/C.jpg}" style="padding:2px;" class="img-custom" alt="...">
+                            </div>
+                            <div class="col-6 align-self-center">
+                                <div class="card-body text-center">
+                                    <label class="form-check-label" for="C">
+                                        C
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-3 align-self-center">
+                                <div class="card-body">
+                                    <input class="form-check-input ms-auto me-auto" type="checkbox" value="" id="C">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="card card-custom justify-content-md-center mb-2">
+                        <div class="row">
+                            <div class="col-3 align-self-center">
+                                <img th:src="@{images/CSS.jpg}" style="padding:2px;" class="img-custom" alt="...">
+                            </div>
+                            <div class="col-6 align-self-center">
+                                <div class="card-body text-center">
+                                    <label class="form-check-label" for="CSS">
+                                        CSS
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-3 align-self-center">
+                                <div class="card-body">
+                                    <input class="form-check-input ms-auto me-auto" type="checkbox" value="" id="CSS">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="card card-custom justify-content-md-center mb-2">
+                        <div class="row">
+                            <div class="col-3 align-self-center">
+                                <img th:src="@{images/Go.jpg}" style="padding:2px;" class="img-custom" alt="...">
+                            </div>
+                            <div class="col-6 align-self-center">
+                                <div class="card-body text-center">
+                                    <label class="form-check-label" for="Go">
+                                        Go
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-3 align-self-center">
+                                <div class="card-body">
+                                    <input class="form-check-input ms-auto me-auto" type="checkbox" value="" id="Go">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-2 mb-2">
+                <div class="col-3">
+                    <div class="card card-custom justify-content-md-center mb-2">
+                        <div class="row">
+                            <div class="col-3 align-self-center">
+                                <img th:src="@{images/Groovy.jpg}" style="padding:2px;" class="img-custom" alt="...">
+                            </div>
+                            <div class="col-6 align-self-center">
+                                <div class="card-body text-center">
+                                    <label class="form-check-label" for="Groovy">
+                                        Groovy
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-3 align-self-center">
+                                <div class="card-body">
+                                    <input class="form-check-input ms-auto me-auto" type="checkbox" value="" id="Groovy">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="card card-custom justify-content-md-center mb-2">
+                        <div class="row">
+                            <div class="col-3 align-self-center">
+                                <img th:src="@{images/Hack.jpg}" style="padding:2px;" class="img-custom" alt="...">
+                            </div>
+                            <div class="col-6 align-self-center">
+                                <div class="card-body text-center">
+                                    <label class="form-check-label" for="Hack">
+                                        Hack
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-3 align-self-center">
+                                <div class="card-body">
+                                    <input class="form-check-input ms-auto me-auto" type="checkbox" value="" id="Hack">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="card card-custom justify-content-md-center mb-2">
+                        <div class="row">
+                            <div class="col-3 align-self-center">
+                                <img th:src="@{images/HTML.jpg}" style="padding:2px;" class="img-custom" alt="...">
+                            </div>
+                            <div class="col-6 align-self-center">
+                                <div class="card-body text-center">
+                                    <label class="form-check-label" for="HTML">
+                                        HTML
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-3 align-self-center">
+                                <div class="card-body">
+                                    <input class="form-check-input ms-auto me-auto" type="checkbox" value="" id="HTML">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="card card-custom justify-content-md-center mb-2">
+                        <div class="row">
+                            <div class="col-3 align-self-center">
+                                <img th:src="@{images/Java.jpg}" style="padding:2px;" class="img-custom" alt="...">
+                            </div>
+                            <div class="col-6 align-self-center">
+                                <div class="card-body text-center">
+                                    <label class="form-check-label" for="Java">
+                                        Java
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-3 align-self-center">
+                                <div class="card-body">
+                                    <input class="form-check-input ms-auto me-auto" type="checkbox" value="" id="Java">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-2 mb-2">
+                <div class="col-3">
+                    <div class="card card-custom justify-content-md-center mb-2">
+                        <div class="row">
+                            <div class="col-3 align-self-center">
+                                <img th:src="@{images/JavaScript.jpg}" style="padding:2px;" class="img-custom" alt="...">
+                            </div>
+                            <div class="col-6 align-self-center">
+                                <div class="card-body text-center">
+                                    <label class="form-check-label" for="JavaScript">
+                                        JavaScript
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-3 align-self-center">
+                                <div class="card-body">
+                                    <input class="form-check-input ms-auto me-auto" type="checkbox" value="" id="JavaScript">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="card card-custom justify-content-md-center mb-2">
+                        <div class="row">
+                            <div class="col-3 align-self-center">
+                                <img th:src="@{images/Kotlin.jpg}" style="padding:2px;" class="img-custom" alt="...">
+                            </div>
+                            <div class="col-6 align-self-center">
+                                <div class="card-body text-center">
+                                    <label class="form-check-label" for="Kotlin">
+                                        Kotlin
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-3 align-self-center">
+                                <div class="card-body">
+                                    <input class="form-check-input ms-auto me-auto" type="checkbox" value="" id="Kotlin">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="card card-custom justify-content-md-center mb-2">
+                        <div class="row">
+                            <div class="col-3 align-self-center">
+                                <img th:src="@{images/Lua.jpg}" style="padding:2px;" class="img-custom" alt="...">
+                            </div>
+                            <div class="col-6 align-self-center">
+                                <div class="card-body text-center">
+                                    <label class="form-check-label" for="Lua">
+                                        Lua
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-3 align-self-center">
+                                <div class="card-body">
+                                    <input class="form-check-input ms-auto me-auto" type="checkbox" value="" id="Lua">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="card card-custom justify-content-md-center mb-2">
+                        <div class="row">
+                            <div class="col-3 align-self-center">
+                                <img th:src="@{images/Objective-C.jpg}" style="padding:2px;" class="img-custom" alt="...">
+                            </div>
+                            <div class="col-6 align-self-center">
+                                <div class="card-body text-center">
+                                    <label class="form-check-label" for="Objective-C">
+                                        Objective-C
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-3 align-self-center">
+                                <div class="card-body">
+                                    <input class="form-check-input ms-auto me-auto" type="checkbox" value="" id="Objective-C">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-2 mb-2">
+                <div class="col-3">
+                    <div class="card card-custom justify-content-md-center mb-2">
+                        <div class="row">
+                            <div class="col-3 align-self-center">
+                                <img th:src="@{images/Perl.jpg}" style="padding:2px;" class="img-custom" alt="...">
+                            </div>
+                            <div class="col-6 align-self-center">
+                                <div class="card-body text-center">
+                                    <label class="form-check-label" for="Perl">
+                                        Perl
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-3 align-self-center">
+                                <div class="card-body">
+                                    <input class="form-check-input ms-auto me-auto" type="checkbox" value="" id="Perl">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="card card-custom justify-content-md-center mb-2">
+                        <div class="row">
+                            <div class="col-3 align-self-center">
+                                <img th:src="@{images/PHP.jpg}" style="padding:2px;" class="img-custom" alt="...">
+                            </div>
+                            <div class="col-6 align-self-center">
+                                <div class="card-body text-center">
+                                    <label class="form-check-label" for="PHP">
+                                        PHP
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-3 align-self-center">
+                                <div class="card-body">
+                                    <input class="form-check-input ms-auto me-auto" type="checkbox" value="" id="PHP">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="card card-custom justify-content-md-center mb-2">
+                        <div class="row">
+                            <div class="col-3 align-self-center">
+                                <img th:src="@{images/PowerShell.jpg}" style="padding:2px;" class="img-custom" alt="...">
+                            </div>
+                            <div class="col-6 align-self-center">
+                                <div class="card-body text-center">
+                                    <label class="form-check-label" for="PowerShell">
+                                        PowerShell
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-3 align-self-center">
+                                <div class="card-body">
+                                    <input class="form-check-input ms-auto me-auto" type="checkbox" value="" id="PowerShell">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="card card-custom justify-content-md-center mb-2">
+                        <div class="row">
+                            <div class="col-3 align-self-center">
+                                <img th:src="@{images/Python.jpg}" style="padding:2px;" class="img-custom" alt="...">
+                            </div>
+                            <div class="col-6 align-self-center">
+                                <div class="card-body text-center">
+                                    <label class="form-check-label" for="Python">
+                                        Python
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-3 align-self-center">
+                                <div class="card-body">
+                                    <input class="form-check-input ms-auto me-auto" type="checkbox" value="" id="Python">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-2 mb-2">
+                <div class="col-3">
+                    <div class="card card-custom justify-content-md-center mb-2">
+                        <div class="row">
+                            <div class="col-3 align-self-center">
+                                <img th:src="@{images/Ruby.jpg}" style="padding:2px;" class="img-custom" alt="...">
+                            </div>
+                            <div class="col-6 align-self-center">
+                                <div class="card-body text-center">
+                                    <label class="form-check-label" for="Ruby">
+                                        Ruby
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-3 align-self-center">
+                                <div class="card-body">
+                                    <input class="form-check-input ms-auto me-auto" type="checkbox" value="" id="Ruby">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="card card-custom justify-content-md-center mb-2">
+                        <div class="row">
+                            <div class="col-3 align-self-center">
+                                <img th:src="@{images/SQL.jpg}" style="padding:2px;" class="img-custom" alt="...">
+                            </div>
+                            <div class="col-6 align-self-center">
+                                <div class="card-body text-center">
+                                    <label class="form-check-label" for="SQL">
+                                        SQL
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-3 align-self-center">
+                                <div class="card-body">
+                                    <input class="form-check-input ms-auto me-auto" type="checkbox" value="" id="SQL">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="card card-custom justify-content-md-center mb-2">
+                        <div class="row">
+                            <div class="col-3 align-self-center">
+                                <img th:src="@{images/Swift.jpg}" style="padding:2px;" class="img-custom" alt="...">
+                            </div>
+                            <div class="col-6 align-self-center">
+                                <div class="card-body text-center">
+                                    <label class="form-check-label" for="Swift">
+                                        Swift
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-3 align-self-center">
+                                <div class="card-body">
+                                    <input class="form-check-input ms-auto me-auto" type="checkbox" value="" id="Swift">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="card card-custom justify-content-md-center mb-2">
+                        <div class="row">
+                            <div class="col-3 align-self-center">
+                                <img th:src="@{images/TeX.jpg}" style="padding:2px;" class="img-custom" alt="...">
+                            </div>
+                            <div class="col-6 align-self-center">
+                                <div class="card-body text-center">
+                                    <label class="form-check-label" for="TeX">
+                                        TeX
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-3 align-self-center">
+                                <div class="card-body">
+                                    <input class="form-check-input ms-auto me-auto" type="checkbox" value="" id="TeX">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-2 mb-2">
+                <div class="col-3">
+                    <div class="card card-custom justify-content-md-center mb-2">
+                        <div class="row">
+                            <div class="col-3 align-self-center">
+                                <img th:src="@{images/TypeScript.jpg}" style="padding:2px;" class="img-custom" alt="...">
+                            </div>
+                            <div class="col-6 align-self-center">
+                                <div class="card-body text-center">
+                                    <label class="form-check-label" for="TypeScript">
+                                        TypeScript
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-3 align-self-center">
+                                <div class="card-body">
+                                    <input class="form-check-input ms-auto me-auto" type="checkbox" value="" id="TypeScript">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-3 justify-content-center">
+            <button type="submit" class="col-1 btn btn-success">Conferma</button>
+        </div>
+    </form>
+</div>
+
+
+</body>
+</html>
