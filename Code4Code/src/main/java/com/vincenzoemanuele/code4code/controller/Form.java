@@ -4,11 +4,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 
 public class Form {
 
-    public Form(){
-
+    public Form() {
     }
 
-    public Form(boolean assembly, boolean bash, boolean batch, boolean CSharp, boolean cpp, boolean c, boolean CSS, boolean go, boolean groovy, boolean hack, boolean HTML, boolean java, boolean javaScript, boolean kotlin, boolean lua, boolean objectiveC, boolean perl, boolean PHP, boolean powerShell, boolean python, boolean ruby, boolean SQL, boolean swift, boolean teX, boolean typeScript) {
+    public Form(boolean assembly, boolean bash, boolean batch, boolean CSharp, boolean cpp, boolean c, boolean CSS, boolean go, boolean groovy, boolean hack, boolean HTML, boolean java, boolean javaScript, boolean kotlin, boolean lua, boolean objectiveC, boolean perl, boolean PHP, boolean powerShell, boolean python, boolean ruby, boolean SQL, boolean swift, boolean teX, boolean typeScript, boolean coffeeScript) {
         Assembly = assembly;
         Bash = bash;
         Batch = batch;
@@ -34,6 +33,7 @@ public class Form {
         Swift = swift;
         TeX = teX;
         TypeScript = typeScript;
+        CoffeeScript = coffeeScript;
     }
 
     public boolean isAssembly() {
@@ -236,6 +236,14 @@ public class Form {
         TypeScript = typeScript;
     }
 
+    public boolean isCoffeeScript() {
+        return CoffeeScript;
+    }
+
+    public void setCoffeeScript(boolean coffeeScript) {
+        CoffeeScript = coffeeScript;
+    }
+
     @Override
     public String toString() {
         return "Form{" +
@@ -264,6 +272,7 @@ public class Form {
                 ", Swift=" + Swift +
                 ", TeX=" + TeX +
                 ", TypeScript=" + TypeScript +
+                ", CoffeeScript=" + CoffeeScript +
                 '}';
     }
 
@@ -292,5 +301,6 @@ public class Form {
     public boolean Swift;
     public boolean TeX;
     public boolean TypeScript;
+    public boolean CoffeeScript;
 
 }

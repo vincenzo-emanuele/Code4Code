@@ -57,15 +57,17 @@ public class ComplementarityTester {
         return output;
     }
 
-    public static HashMap<String, Double> getSuggestedLangs(List<Rule> rules){
+    public static List<Map.Entry<String, Double>> getSuggestedLangs(List<Rule> rules){
         HashMap<String, Double> output = new HashMap<>();
+        List<Map.Entry<String, Double>> outputList = new ArrayList<>();
         int index = calculateIndex(rules);
         for(int i = index; i < rules.size(); i++){
             for(String succ : rules.get(i).getSucc()){
                 output.put(succ, rules.get(i).getConfidence());
             }
         }
-        return output;
+        outputList.addAll(output.entrySet());
+        return outputList;
     }
 
     public static int calculateIndex(List<Rule> rules){
@@ -80,22 +82,24 @@ public class ComplementarityTester {
         return index;
     }
 
-    public static HashMap<String, Double> getComplementarity(List<String> inputLangs) throws Exception{
+    public static List<Map.Entry<String, Double>> getComplementarity(List<String> inputLangs) throws Exception{
         FileInputStream stream = new FileInputStream("src/main/resources/files/langs_json.txt");
         wrappers = readWrappers(stream);
         HashSet<String> set = new HashSet<>();
         for(Wrapper w : wrappers){
             set.addAll(w.getLinguaggi());
         }
-        System.out.println(set);
-        System.out.println(set.size());
         List<Rule> rules = getRelevantRules(inputLangs);
         sortRules(rules);
         List<Rule> filteredRules = filterByConfidence(rules);
-        HashMap<String, Double> suggested = getSuggestedLangs(filteredRules);
-        for(Map.Entry<String, Double> entry : suggested.entrySet()){
-            System.out.println(entry);
+        List<Map.Entry<String, Double>> suggested = getSuggestedLangs(filteredRules);
+        for(int i = 0; i < suggested.size(); i++){
+            if(inputLangs.contains(suggested.get(i).getKey())){
+                suggested.remove(i);
+                i--;
+            }
         }
+        System.out.println("FIltered rules: " + filteredRules);
         return suggested;
     }
 

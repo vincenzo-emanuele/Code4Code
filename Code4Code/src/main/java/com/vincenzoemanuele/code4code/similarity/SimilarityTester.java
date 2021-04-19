@@ -5,7 +5,6 @@ import com.vincenzoemanuele.code4code.similarity.beans.Language;
 import com.vincenzoemanuele.code4code.similarity.beans.Paradigm;
 import com.vincenzoemanuele.code4code.similarity.beans.Type;
 import com.vincenzoemanuele.code4code.similarity.beans.Usage;
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.*;
@@ -39,10 +38,10 @@ public class SimilarityTester {
         return output;
     }
 
-    public static HashMap<Language, Integer> getLanguagesScore(Language inputLanguage, List<Language> filteredLanguages){
-        HashMap<Language, Integer> output = new HashMap<>();
+    public static List<Map.Entry<Language, Integer>> getLanguagesScore(Language inputLanguage, List<Language> filteredLanguages){
+        ArrayList<Map.Entry<Language, Integer>> output = new ArrayList<>();
         for(Language l : filteredLanguages){
-            output.put(l, calculateScore(inputLanguage, l));
+            output.add(new AbstractMap.SimpleEntry<Language, Integer>(l, calculateScore(inputLanguage, l)));
         }
         return output;
     }
@@ -58,30 +57,38 @@ public class SimilarityTester {
         return score;
     }
 
-    public static ArrayList<Map.Entry<Language, Integer>> filterByScore(HashMap<Language, Integer> languagesScore){
-        ArrayList<Map.Entry<Language, Integer>> sorted = sortMapByScore(languagesScore);
-        for(int i = 0; i < sorted.size(); i++){
-            if(sorted.get(i).getValue() == 0){
-                sorted.remove(i);
-                i--;
+    public static List<Map.Entry<Language, Integer>> filterByScore(List<Map.Entry<Language, Integer>> languagesScore){
+        sortLangsByScore(languagesScore);
+        boolean noZero = false;
+        for(int i = 0; i < languagesScore.size(); i++){
+            if(languagesScore.get(i).getValue() != 0){
+                noZero = true;
+                break;
+            }
+        }
+        if(noZero) {
+            for (int i = 0; i < languagesScore.size(); i++) {
+                if (languagesScore.get(i).getValue() == 0) {
+                    languagesScore.remove(i);
+                    i--;
+                }
             }
         }
         int index;
-        if(sorted.size() > 5){
-            index = sorted.size()/2;
+        if(languagesScore.size() > 5){
+            index = languagesScore.size()/2;
         } else {
             index = 0;
         }
         ArrayList<Map.Entry<Language, Integer>> output = new ArrayList<>();
-        for(int i = index; i < sorted.size(); i++){
-            output.add(sorted.get(i));
+        for(int i = index; i < languagesScore.size(); i++){
+            output.add(languagesScore.get(i));
         }
         return output;
     }
 
-    public static ArrayList<Map.Entry<Language, Integer>> sortMapByScore(HashMap<Language, Integer> languageScore){
-        ArrayList<Map.Entry<Language, Integer>> temp = new ArrayList<>(languageScore.entrySet());
-        Collections.sort(temp, new Comparator<Map.Entry<Language, Integer>>() {
+    public static void sortLangsByScore(List<Map.Entry<Language, Integer>> languageScore){
+        Collections.sort(languageScore, new Comparator<Map.Entry<Language, Integer>>() {
             @Override
             public int compare(Map.Entry<Language, Integer> o1, Map.Entry<Language, Integer> o2) {
                 if(o1.getValue() < o2.getValue()){
@@ -93,17 +100,14 @@ public class SimilarityTester {
                 }
             }
         });
-        return temp;
     }
 
-    public static ArrayList<Map.Entry<Language, Integer>> getSimilarity(String language)  throws Exception {
-
-        languages = readLanguages(new FileInputStream("src/main/resources/files/langs.txt"));
+    public static List<Map.Entry<Language, Integer>> getSingleSimilarity(String language)  throws Exception {
         Language inputLanguage = findLanguage(language);
         languages.remove(inputLanguage);
         List<Language> filteredLanguages = filterLanguages(inputLanguage.getType());
-        HashMap<Language, Integer> languagesScore = getLanguagesScore(inputLanguage, filteredLanguages);
-        ArrayList<Map.Entry<Language, Integer>> result = filterByScore(languagesScore);
+        List<Map.Entry<Language, Integer>> languagesScore = getLanguagesScore(inputLanguage, filteredLanguages);
+        List<Map.Entry<Language, Integer>> result = filterByScore(languagesScore);
         for(Map.Entry<Language, Integer> entry : result){
             System.out.println(entry.getKey().getName() + "=" + entry.getValue());
             double value1 = entry.getKey().getParadigms().size() + entry.getKey().getUsages().size();
@@ -113,6 +117,26 @@ public class SimilarityTester {
             System.out.println("Value2 " + value2);
             System.out.println("VALUE: " + out);
         }
+        return result;
+    }
+
+    public static List<Map.Entry<Language, Integer>> getSimilarity(List<String> inputLangs) throws Exception{
+        languages = readLanguages(new FileInputStream("src/main/resources/files/langs.txt"));
+        ArrayList<Map.Entry<Language, Integer>> output = new ArrayList<>();
+        for(String lang : inputLangs){
+            output.addAll(getSingleSimilarity(lang));
+        }
+
+        for(int i = 0; i < output.size(); i++){
+            if(inputLangs.contains(output.get(i).getKey().getName())){
+                output.remove(i);
+                i--;
+            }
+        }
+
+        System.out.println("BEFORE FILTERING:\n" + output);
+        List<Map.Entry<Language, Integer>> result = filterByScore(output);
+        System.out.println("AFTER FILTERING:\n" + result);
         return result;
     }
 
