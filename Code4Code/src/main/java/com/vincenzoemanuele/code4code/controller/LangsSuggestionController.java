@@ -56,12 +56,8 @@ public class LangsSuggestionController {
 
     @GetMapping("/suggest")
     public String getSuggestion(@ModelAttribute("form") Form form, Model model) throws Exception {
-        System.out.println("FORM:");
-        System.out.println(form);
         List<String> inputLanguages = getLanguages(form);
-        System.out.println("INPUT " + inputLanguages);
         List<Map.Entry<String, Double>> complementary = ComplementarityTester.getComplementarity(inputLanguages);
-        System.out.println("COMPL: " + complementary);
         List<Map.Entry<Language, Integer>> similar = SimilarityTester.getSimilarity(inputLanguages);
         model.addAttribute("similar", similar);
         model.addAttribute("complementary", complementary);

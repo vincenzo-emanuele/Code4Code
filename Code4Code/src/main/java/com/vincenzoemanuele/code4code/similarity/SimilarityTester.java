@@ -11,7 +11,7 @@ import java.util.*;
 
 public class SimilarityTester {
 
-    public static List<Language> readLanguages(FileInputStream stream) throws FileNotFoundException {
+    public static List<Language> readLanguages(FileInputStream stream) {
         Gson gson = new Gson();
         Scanner sc = new Scanner(stream);
         String content = sc.nextLine();
@@ -121,7 +121,7 @@ public class SimilarityTester {
     }
 
     public static List<Map.Entry<Language, Integer>> getSimilarity(List<String> inputLangs) throws Exception{
-        languages = readLanguages(new FileInputStream("src/main/resources/files/langs.txt"));
+        languages = readLanguages(new FileInputStream("src/main/resources/files/langs.json"));
         ArrayList<Map.Entry<Language, Integer>> output = new ArrayList<>();
         for(String lang : inputLangs){
             output.addAll(getSingleSimilarity(lang));
@@ -134,9 +134,7 @@ public class SimilarityTester {
             }
         }
 
-        System.out.println("BEFORE FILTERING:\n" + output);
         List<Map.Entry<Language, Integer>> result = filterByScore(output);
-        System.out.println("AFTER FILTERING:\n" + result);
         return result;
     }
 

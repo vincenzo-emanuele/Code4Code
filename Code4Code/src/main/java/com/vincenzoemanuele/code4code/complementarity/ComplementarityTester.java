@@ -1,20 +1,22 @@
 package com.vincenzoemanuele.code4code.complementarity;
 
 import com.google.gson.Gson;
+import com.google.gson.stream.JsonReader;
 import com.vincenzoemanuele.code4code.complementarity.beans.Rule;
 import com.vincenzoemanuele.code4code.complementarity.beans.Wrapper;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.*;
 
 public class ComplementarityTester {
 
-    public static List<Wrapper> readWrappers(FileInputStream stream) throws FileNotFoundException{
+    public static List<Wrapper> readWrappers(FileReader stream) throws Exception{
         Gson gson = new Gson();
-        Scanner sc = new Scanner(stream);
-        String content = sc.nextLine();
-        return Arrays.asList(gson.fromJson(content, Wrapper[].class));
+        JsonReader r = new JsonReader(stream);
+        return Arrays.asList(gson.fromJson(r, Wrapper[].class));
     }
 
     public static List<Rule> getRelevantRules(List<String> inputLangs){
@@ -83,12 +85,8 @@ public class ComplementarityTester {
     }
 
     public static List<Map.Entry<String, Double>> getComplementarity(List<String> inputLangs) throws Exception{
-        FileInputStream stream = new FileInputStream("src/main/resources/files/langs_json.txt");
-        wrappers = readWrappers(stream);
-        HashSet<String> set = new HashSet<>();
-        for(Wrapper w : wrappers){
-            set.addAll(w.getLinguaggi());
-        }
+        FileReader reader = new FileReader("src/main/resources/files/langs_json.json");
+        wrappers = readWrappers(reader);
         List<Rule> rules = getRelevantRules(inputLangs);
         sortRules(rules);
         List<Rule> filteredRules = filterByConfidence(rules);
@@ -99,7 +97,6 @@ public class ComplementarityTester {
                 i--;
             }
         }
-        System.out.println("FIltered rules: " + filteredRules);
         return suggested;
     }
 
