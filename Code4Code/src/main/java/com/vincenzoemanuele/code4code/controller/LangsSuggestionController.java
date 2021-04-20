@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 public class LangsSuggestionController {
@@ -58,7 +59,33 @@ public class LangsSuggestionController {
     public String getSuggestion(@ModelAttribute("form") Form form, Model model) throws Exception {
         List<String> inputLanguages = getLanguages(form);
         List<Map.Entry<String, Double>> complementary = ComplementarityTester.getComplementarity(inputLanguages);
-        List<Map.Entry<Language, Integer>> similar = SimilarityTester.getSimilarity(inputLanguages);
+        List<Map.Entry<Language, Double>> similar = SimilarityTester.getSimilarity(inputLanguages);
+        for(int i = 0; i < similar.size(); i++){
+            for(int j = 0; j < complementary.size(); j++){
+                if(similar.get(i).getKey().getName().equals(complementary.get(j).getKey())){
+                    if(similar.get(i).getValue() > complementary.get(j).getValue()){
+                        complementary.remove(j);
+                        j--;
+                    } else {
+                        similar.remove(i);
+                        i--;
+                    }
+                }
+            }
+        }
+        complementary.sort(new Comparator<Map.Entry<String, Double>>() {
+            @Override
+            public int compare(Map.Entry<String, Double> o1, Map.Entry<String, Double> o2) {
+                return o2.getValue().compareTo(o1.getValue());
+            }
+        });
+        similar.sort(new Comparator<Map.Entry<Language, Double>>() {
+            @Override
+            public int compare(Map.Entry<Language, Double> o1, Map.Entry<Language, Double> o2) {
+                return o2.getValue().compareTo(o1.getValue());
+            }
+        });
+        model.addAttribute("inputLanguages", inputLanguages);
         model.addAttribute("similar", similar);
         model.addAttribute("complementary", complementary);
         return "langs_result";

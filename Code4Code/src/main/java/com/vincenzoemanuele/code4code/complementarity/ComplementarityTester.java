@@ -52,7 +52,7 @@ public class ComplementarityTester {
     public static List<Rule> filterByConfidence (List<Rule> rules){
         List<Rule> output = new ArrayList<>();
         for(Rule r : rules){
-            if(r.getConfidence() > 0.10){
+            if(r.getConfidence() > 0.15){
                 output.add(r);
             }
         }
@@ -97,6 +97,8 @@ public class ComplementarityTester {
                 i--;
             }
         }
+        System.out.println(suggested);
+        System.out.println(filteredRules);
         return suggested;
     }
 

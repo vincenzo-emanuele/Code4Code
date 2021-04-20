@@ -6,7 +6,6 @@ import com.vincenzoemanuele.code4code.similarity.beans.Paradigm;
 import com.vincenzoemanuele.code4code.similarity.beans.Type;
 import com.vincenzoemanuele.code4code.similarity.beans.Usage;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.*;
 
 public class SimilarityTester {
@@ -102,12 +101,13 @@ public class SimilarityTester {
         });
     }
 
-    public static List<Map.Entry<Language, Integer>> getSingleSimilarity(String language)  throws Exception {
+    public static List<Map.Entry<Language, Double>> getSingleSimilarity(String language)  throws Exception {
         Language inputLanguage = findLanguage(language);
         languages.remove(inputLanguage);
         List<Language> filteredLanguages = filterLanguages(inputLanguage.getType());
         List<Map.Entry<Language, Integer>> languagesScore = getLanguagesScore(inputLanguage, filteredLanguages);
         List<Map.Entry<Language, Integer>> result = filterByScore(languagesScore);
+        List<Map.Entry<Language, Double>> output = new ArrayList<>();
         for(Map.Entry<Language, Integer> entry : result){
             System.out.println(entry.getKey().getName() + "=" + entry.getValue());
             double value1 = entry.getKey().getParadigms().size() + entry.getKey().getUsages().size();
@@ -116,26 +116,51 @@ public class SimilarityTester {
             System.out.println("Value1: " + value1);
             System.out.println("Value2 " + value2);
             System.out.println("VALUE: " + out);
+            output.add(new AbstractMap.SimpleEntry<Language, Double>(entry.getKey(), out));
         }
-        return result;
+        return output;
     }
 
-    public static List<Map.Entry<Language, Integer>> getSimilarity(List<String> inputLangs) throws Exception{
+    public static List<Map.Entry<Language, Double>> filterByRatio(List<Map.Entry<Language, Double>> langs){
+        langs.sort(new Comparator<Map.Entry<Language, Double>>() {
+            @Override
+            public int compare(Map.Entry<Language, Double> o1, Map.Entry<Language, Double> o2) {
+                return o2.getValue().compareTo(o1.getValue());
+            }
+        });
+
+        int index;
+        if(langs.size() > 5){
+            index = langs.size()/2;
+        } else {
+            index = 0;
+        }
+        ArrayList<Map.Entry<Language, Double>> output = new ArrayList<>();
+        for(int i = index; i < langs.size(); i++){
+            output.add(langs.get(i));
+        }
+        return output;
+
+    }
+
+    public static List<Map.Entry<Language, Double>> getSimilarity(List<String> inputLangs) throws Exception{
         languages = readLanguages(new FileInputStream("src/main/resources/files/langs.json"));
-        ArrayList<Map.Entry<Language, Integer>> output = new ArrayList<>();
+        ArrayList<Map.Entry<Language, Double>> output = new ArrayList<>();
         for(String lang : inputLangs){
             output.addAll(getSingleSimilarity(lang));
         }
-
         for(int i = 0; i < output.size(); i++){
             if(inputLangs.contains(output.get(i).getKey().getName())){
                 output.remove(i);
                 i--;
             }
         }
-
-        List<Map.Entry<Language, Integer>> result = filterByScore(output);
-        return result;
+        List<Map.Entry<Language, Double>> result = filterByRatio(output);
+        HashMap<Language, Double> map = new HashMap<>();
+        for(Map.Entry<Language, Double> entry : result){
+            map.put(entry.getKey(), entry.getValue());
+        }
+        return new ArrayList<>(map.entrySet());
     }
 
     private static List<Language> languages;
