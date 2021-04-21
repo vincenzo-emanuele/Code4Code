@@ -1,6 +1,6 @@
 package com.vincenzoemanuele.code4code.controller;
 
-import com.vincenzoemanuele.code4code.complementarity.ComplementarityTester;
+import com.vincenzoemanuele.code4code.complementarity.ComplementarityRunner;
 import com.vincenzoemanuele.code4code.similarity.SimilarityTester;
 import com.vincenzoemanuele.code4code.similarity.beans.Language;
 import org.springframework.stereotype.Controller;
@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Controller
 public class LangsSuggestionController {
@@ -58,10 +57,8 @@ public class LangsSuggestionController {
     @GetMapping("/suggest")
     public String getSuggestion(@ModelAttribute("form") Form form, Model model) throws Exception {
         List<String> inputLanguages = getLanguages(form);
-        List<Map.Entry<String, Double>> complementary = ComplementarityTester.getComplementarity(inputLanguages);
+        List<Map.Entry<String, Double>> complementary = ComplementarityRunner.getComplementarity(inputLanguages);
         List<Map.Entry<Language, Double>> similar = SimilarityTester.getSimilarity(inputLanguages);
-        System.out.println("Similar size: " + similar.size());
-        System.out.println("Complementary size: " +complementary.size());
         List<Map.Entry<String, Double>> removeFromComplementary = new ArrayList<>();
         List<Map.Entry<Language, Double>> removeFromSimilarity = new ArrayList<>();
 
@@ -90,7 +87,6 @@ public class LangsSuggestionController {
                 return o2.getValue().compareTo(o1.getValue());
             }
         });
-        System.out.println(complementary);
         model.addAttribute("inputLanguages", inputLanguages);
         model.addAttribute("similar", similar);
         model.addAttribute("complementary", complementary);

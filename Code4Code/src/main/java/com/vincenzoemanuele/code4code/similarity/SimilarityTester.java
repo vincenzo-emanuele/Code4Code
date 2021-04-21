@@ -1,19 +1,27 @@
 package com.vincenzoemanuele.code4code.similarity;
 
 import com.google.gson.Gson;
+import com.google.gson.stream.JsonReader;
+import com.vincenzoemanuele.code4code.complementarity.beans.Wrapper;
 import com.vincenzoemanuele.code4code.similarity.beans.*;
 
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.util.*;
 
 public class SimilarityTester {
 
-    public static List<Language> readLanguages(FileInputStream stream) {
+    public static List<Language> readLanguages(FileReader stream) {
+        Gson gson = new Gson();
+        JsonReader r = new JsonReader(stream);
+        return new ArrayList<>(Arrays.asList(gson.fromJson(r, Language[].class)));
+/*
         Gson gson = new Gson();
         Scanner sc = new Scanner(stream);
         String content = sc.nextLine();
         Language[] languages = gson.fromJson(content, Language[].class);
         return new ArrayList<>(Arrays.asList(languages));
+*/
     }
 
     public static Language findLanguage(String languageName){
@@ -45,15 +53,15 @@ public class SimilarityTester {
 
     public static int calculateScore(Language inputLanguage, Language currentLanguage){
         int score = 0;
-        HashSet<Usage> temp = new HashSet<>(inputLanguage.getUsages());
-        temp.retainAll(currentLanguage.getUsages());
-        score += temp.size();
-        HashSet<Paradigm> temp2 = new HashSet<>(inputLanguage.getParadigms());
-        temp2.retainAll(currentLanguage.getParadigms());
-        score += temp2.size();
-        HashSet<Typing> temp3 = new HashSet<>(inputLanguage.getTypings());
-        temp3.retainAll(currentLanguage.getTypings());
-        score += temp3.size();
+        HashSet<Usage> commonUsages = new HashSet<>(inputLanguage.getUsages());
+        commonUsages.retainAll(currentLanguage.getUsages());
+        score += commonUsages.size();
+        HashSet<Paradigm> commonParadigms = new HashSet<>(inputLanguage.getParadigms());
+        commonParadigms.retainAll(currentLanguage.getParadigms());
+        score += commonParadigms.size();
+        HashSet<Typing> commonTypings = new HashSet<>(inputLanguage.getTypings());
+        commonTypings.retainAll(currentLanguage.getTypings());
+        score += commonTypings.size();
         return score;
     }
 
@@ -102,7 +110,7 @@ public class SimilarityTester {
         });
     }
 
-    public static List<Map.Entry<Language, Double>> getSingleSimilarity(String language)  throws Exception {
+    public static List<Map.Entry<Language, Double>> getSingleSimilarity(String language) {
         Language inputLanguage = findLanguage(language);
         languages.remove(inputLanguage);
         List<Language> filteredLanguages = filterLanguages(inputLanguage.getType());
@@ -110,13 +118,9 @@ public class SimilarityTester {
         List<Map.Entry<Language, Integer>> result = filterByScore(languagesScore);
         List<Map.Entry<Language, Double>> output = new ArrayList<>();
         for(Map.Entry<Language, Integer> entry : result){
-            System.out.println(entry.getKey().getName() + "=" + entry.getValue());
             double value1 = entry.getKey().getParadigms().size() + entry.getKey().getUsages().size() + entry.getKey().getTypings().size();
             double value2 = entry.getValue();
             double out = value2/value1;
-            System.out.println("Value1: " + value1);
-            System.out.println("Value2 " + value2);
-            System.out.println("VALUE: " + out);
             output.add(new AbstractMap.SimpleEntry<Language, Double>(entry.getKey(), out));
         }
         return output;
@@ -145,7 +149,7 @@ public class SimilarityTester {
     }
 
     public static List<Map.Entry<Language, Double>> getSimilarity(List<String> inputLangs) throws Exception{
-        languages = readLanguages(new FileInputStream("src/main/resources/files/langs.json"));
+        languages = readLanguages(new FileReader("src/main/resources/files/langs.json"));
         ArrayList<Map.Entry<Language, Double>> output = new ArrayList<>();
         for(String lang : inputLangs){
             output.addAll(getSingleSimilarity(lang));
@@ -159,7 +163,13 @@ public class SimilarityTester {
         List<Map.Entry<Language, Double>> result = filterByRatio(output);
         HashMap<Language, Double> map = new HashMap<>();
         for(Map.Entry<Language, Double> entry : result){
-            map.put(entry.getKey(), entry.getValue());
+            if(map.containsKey(entry.getKey())){
+                if(map.get(entry.getKey()) < entry.getValue()) {
+                    map.put(entry.getKey(), entry.getValue());
+                }
+            } else {
+                map.put(entry.getKey(), entry.getValue());
+            }
         }
         return new ArrayList<>(map.entrySet());
     }

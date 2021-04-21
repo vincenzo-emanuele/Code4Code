@@ -7,9 +7,9 @@ import com.vincenzoemanuele.code4code.complementarity.beans.Wrapper;
 import java.io.*;
 import java.util.*;
 
-public class ComplementarityTester {
+public class ComplementarityRunner {
 
-    public static List<Wrapper> readWrappers(FileReader stream) throws Exception{
+    public static List<Wrapper> readWrappers(FileReader stream) {
         Gson gson = new Gson();
         JsonReader r = new JsonReader(stream);
         return Arrays.asList(gson.fromJson(r, Wrapper[].class));
@@ -30,17 +30,11 @@ public class ComplementarityTester {
         return output;
     }
 
-    public static void sortRules(List<Rule> rules){
-        Collections.sort(rules, new Comparator<Rule>() {
+    public static void sortLanguages(List<Map.Entry<String, Double>> languages){
+        languages.sort(new Comparator<Map.Entry<String, Double>>() {
             @Override
-            public int compare(Rule r1, Rule r2) {
-                if(r1.getConfidence() < r2.getConfidence()){
-                    return -1;
-                } else if(r1.getConfidence() > r2.getConfidence()){
-                    return 1;
-                } else {
-                    return 0;
-                }
+            public int compare(Map.Entry<String, Double> o1, Map.Entry<String, Double> o2) {
+                return o1.getValue().compareTo(o2.getValue());
             }
         });
     }
@@ -55,33 +49,39 @@ public class ComplementarityTester {
         return output;
     }
 
-    public static List<Map.Entry<String, Double>> getSuggestedLangs(List<Rule> rules, List<String> inputLang){
-        List<Map.Entry<String, Double>> filtered = filter(rules, inputLang);
+    public static List<Map.Entry<String, Double>> getSuggestedLangs(List<Rule> rules, List<String> inputLangs){
+        List<Map.Entry<String, Double>> languages = getLanguagesList(rules, inputLangs);
+        sortLanguages(languages);
         List<Map.Entry<String, Double>> outputList = new ArrayList<>();
-        filtered.sort(new Comparator<Map.Entry<String, Double>>() {
+        /*languages.sort(new Comparator<Map.Entry<String, Double>>() {
             @Override
             public int compare(Map.Entry<String, Double> o1, Map.Entry<String, Double> o2) {
                 return o1.getValue().compareTo(o2.getValue());
             }
-        });
-        int index = calculateIndex(filtered);
-        for(int i = index; i < filtered.size(); i++){
-            outputList.add(filtered.get(i));
+        });*/
+        int index = calculateIndex(languages);
+        for(int i = index; i < languages.size(); i++){
+            outputList.add(languages.get(i));
         }
-        System.out.println("OUT: " + outputList);
         return outputList;
     }
 
-    public static List<Map.Entry<String, Double>> filter(List<Rule> rules, List<String> inputLangs){
+    public static List<Map.Entry<String, Double>> getLanguagesList(List<Rule> rules, List<String> inputLangs){
         HashMap<String, Double> suggestedLangs = new HashMap<>();
         for(Rule r : rules){
             for(String succ : r.getSucc()){
                 if(!inputLangs.contains(succ)) {
-                    suggestedLangs.put(succ, r.getConfidence());
+                    if(suggestedLangs.containsKey(succ)){
+                        if(suggestedLangs.get(succ) < r.getConfidence()){
+                            suggestedLangs.put(succ, r.getConfidence());
+                        }
+                    } else {
+                        suggestedLangs.put(succ, r.getConfidence());
+                    }
                 }
             }
         }
-        System.out.println("SUGG " + suggestedLangs);
+        System.out.println("AFTER REMOVE INPUT LANGS: " + suggestedLangs);
         return new ArrayList<>(suggestedLangs.entrySet());
     }
 
@@ -101,11 +101,12 @@ public class ComplementarityTester {
         FileReader reader = new FileReader("src/main/resources/files/langs_json.json");
         wrappers = readWrappers(reader);
         List<Rule> rules = getRelevantRules(inputLangs);
-        sortRules(rules);
-        System.out.println("RELEVANT " + rules);
+        System.out.println("BEFORE SORTING: " + rules);
+        //sortRules(rules);
+        System.out.println("AFTER SORTING: " + rules);
         List<Rule> filteredRules = filterByConfidence(rules);
+        System.out.println("AFTER FILTERING: " + filteredRules);
         List<Map.Entry<String, Double>> suggested = getSuggestedLangs(filteredRules, inputLangs);
-        System.out.println("RULES: " + rules);
         return suggested;
     }
 
