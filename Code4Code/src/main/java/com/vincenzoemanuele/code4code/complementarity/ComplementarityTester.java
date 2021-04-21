@@ -4,10 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.vincenzoemanuele.code4code.complementarity.beans.Rule;
 import com.vincenzoemanuele.code4code.complementarity.beans.Wrapper;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-
 import java.io.*;
 import java.util.*;
 
@@ -52,27 +48,44 @@ public class ComplementarityTester {
     public static List<Rule> filterByConfidence (List<Rule> rules){
         List<Rule> output = new ArrayList<>();
         for(Rule r : rules){
-            if(r.getConfidence() > 0.15){
+            if(r.getConfidence() > 0.01){
                 output.add(r);
             }
         }
         return output;
     }
 
-    public static List<Map.Entry<String, Double>> getSuggestedLangs(List<Rule> rules){
-        HashMap<String, Double> output = new HashMap<>();
+    public static List<Map.Entry<String, Double>> getSuggestedLangs(List<Rule> rules, List<String> inputLang){
+        List<Map.Entry<String, Double>> filtered = filter(rules, inputLang);
         List<Map.Entry<String, Double>> outputList = new ArrayList<>();
-        int index = calculateIndex(rules);
-        for(int i = index; i < rules.size(); i++){
-            for(String succ : rules.get(i).getSucc()){
-                output.put(succ, rules.get(i).getConfidence());
+        filtered.sort(new Comparator<Map.Entry<String, Double>>() {
+            @Override
+            public int compare(Map.Entry<String, Double> o1, Map.Entry<String, Double> o2) {
+                return o1.getValue().compareTo(o2.getValue());
             }
+        });
+        int index = calculateIndex(filtered);
+        for(int i = index; i < filtered.size(); i++){
+            outputList.add(filtered.get(i));
         }
-        outputList.addAll(output.entrySet());
+        System.out.println("OUT: " + outputList);
         return outputList;
     }
 
-    public static int calculateIndex(List<Rule> rules){
+    public static List<Map.Entry<String, Double>> filter(List<Rule> rules, List<String> inputLangs){
+        HashMap<String, Double> suggestedLangs = new HashMap<>();
+        for(Rule r : rules){
+            for(String succ : r.getSucc()){
+                if(!inputLangs.contains(succ)) {
+                    suggestedLangs.put(succ, r.getConfidence());
+                }
+            }
+        }
+        System.out.println("SUGG " + suggestedLangs);
+        return new ArrayList<>(suggestedLangs.entrySet());
+    }
+
+    public static int calculateIndex(List<Map.Entry<String, Double>> rules){
         int index;
         if(rules.size() <= 10){
             index = 0;
@@ -89,16 +102,10 @@ public class ComplementarityTester {
         wrappers = readWrappers(reader);
         List<Rule> rules = getRelevantRules(inputLangs);
         sortRules(rules);
+        System.out.println("RELEVANT " + rules);
         List<Rule> filteredRules = filterByConfidence(rules);
-        List<Map.Entry<String, Double>> suggested = getSuggestedLangs(filteredRules);
-        for(int i = 0; i < suggested.size(); i++){
-            if(inputLangs.contains(suggested.get(i).getKey())){
-                suggested.remove(i);
-                i--;
-            }
-        }
-        System.out.println(suggested);
-        System.out.println(filteredRules);
+        List<Map.Entry<String, Double>> suggested = getSuggestedLangs(filteredRules, inputLangs);
+        System.out.println("RULES: " + rules);
         return suggested;
     }
 

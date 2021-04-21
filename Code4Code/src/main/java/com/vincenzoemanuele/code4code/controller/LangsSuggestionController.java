@@ -60,19 +60,24 @@ public class LangsSuggestionController {
         List<String> inputLanguages = getLanguages(form);
         List<Map.Entry<String, Double>> complementary = ComplementarityTester.getComplementarity(inputLanguages);
         List<Map.Entry<Language, Double>> similar = SimilarityTester.getSimilarity(inputLanguages);
-        for(int i = 0; i < similar.size(); i++){
-            for(int j = 0; j < complementary.size(); j++){
-                if(similar.get(i).getKey().getName().equals(complementary.get(j).getKey())){
-                    if(similar.get(i).getValue() > complementary.get(j).getValue()){
-                        complementary.remove(j);
-                        j--;
+        System.out.println("Similar size: " + similar.size());
+        System.out.println("Complementary size: " +complementary.size());
+        List<Map.Entry<String, Double>> removeFromComplementary = new ArrayList<>();
+        List<Map.Entry<Language, Double>> removeFromSimilarity = new ArrayList<>();
+
+        for (Map.Entry<Language, Double> languageDoubleEntry : similar) {
+            for (Map.Entry<String, Double> stringDoubleEntry : complementary) {
+                if (languageDoubleEntry.getKey().getName().equals(stringDoubleEntry.getKey())) {
+                    if (languageDoubleEntry.getValue() > stringDoubleEntry.getValue()) {
+                        removeFromComplementary.add(stringDoubleEntry);
                     } else {
-                        similar.remove(i);
-                        i--;
+                        removeFromSimilarity.add(languageDoubleEntry);
                     }
                 }
             }
         }
+        complementary.removeAll(removeFromComplementary);
+        similar.removeAll(removeFromSimilarity);
         complementary.sort(new Comparator<Map.Entry<String, Double>>() {
             @Override
             public int compare(Map.Entry<String, Double> o1, Map.Entry<String, Double> o2) {
@@ -85,6 +90,7 @@ public class LangsSuggestionController {
                 return o2.getValue().compareTo(o1.getValue());
             }
         });
+        System.out.println(complementary);
         model.addAttribute("inputLanguages", inputLanguages);
         model.addAttribute("similar", similar);
         model.addAttribute("complementary", complementary);

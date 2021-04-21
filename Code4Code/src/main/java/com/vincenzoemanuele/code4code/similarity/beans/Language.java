@@ -7,9 +7,10 @@ public class Language {
     public Language() {
     }
 
-    public Language(String name, Type type, ArrayList<Paradigm> paradigms, ArrayList<Usage> usages) {
+    public Language(String name, Type type, ArrayList<Typing> typings, ArrayList<Paradigm> paradigms, ArrayList<Usage> usages) {
         this.name = name;
         this.type = type;
+        this.typings = typings;
         this.paradigms = paradigms;
         this.usages = usages;
     }
@@ -28,6 +29,14 @@ public class Language {
 
     public void setType(Type type) {
         this.type = type;
+    }
+
+    public ArrayList<Typing> getTypings() {
+        return typings;
+    }
+
+    public void setTypings(ArrayList<Typing> typings) {
+        this.typings = typings;
     }
 
     public ArrayList<Paradigm> getParadigms() {
@@ -51,6 +60,7 @@ public class Language {
         return "Language{" +
                 "name='" + name + '\'' +
                 ", type=" + type +
+                ", typings=" + typings +
                 ", paradigms=" + paradigms +
                 ", usages=" + usages +
                 '}';
@@ -58,6 +68,7 @@ public class Language {
 
     private String name;
     private Type type;
+    private ArrayList<Typing> typings;
     private ArrayList<Paradigm> paradigms;
     private ArrayList<Usage> usages;
 

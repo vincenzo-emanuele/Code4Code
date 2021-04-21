@@ -1,10 +1,8 @@
 package com.vincenzoemanuele.code4code.similarity;
 
 import com.google.gson.Gson;
-import com.vincenzoemanuele.code4code.similarity.beans.Language;
-import com.vincenzoemanuele.code4code.similarity.beans.Paradigm;
-import com.vincenzoemanuele.code4code.similarity.beans.Type;
-import com.vincenzoemanuele.code4code.similarity.beans.Usage;
+import com.vincenzoemanuele.code4code.similarity.beans.*;
+
 import java.io.FileInputStream;
 import java.util.*;
 
@@ -52,7 +50,10 @@ public class SimilarityTester {
         score += temp.size();
         HashSet<Paradigm> temp2 = new HashSet<>(inputLanguage.getParadigms());
         temp2.retainAll(currentLanguage.getParadigms());
-        score += temp.size();
+        score += temp2.size();
+        HashSet<Typing> temp3 = new HashSet<>(inputLanguage.getTypings());
+        temp3.retainAll(currentLanguage.getTypings());
+        score += temp3.size();
         return score;
     }
 
@@ -110,7 +111,7 @@ public class SimilarityTester {
         List<Map.Entry<Language, Double>> output = new ArrayList<>();
         for(Map.Entry<Language, Integer> entry : result){
             System.out.println(entry.getKey().getName() + "=" + entry.getValue());
-            double value1 = entry.getKey().getParadigms().size() + entry.getKey().getUsages().size();
+            double value1 = entry.getKey().getParadigms().size() + entry.getKey().getUsages().size() + entry.getKey().getTypings().size();
             double value2 = entry.getValue();
             double out = value2/value1;
             System.out.println("Value1: " + value1);
