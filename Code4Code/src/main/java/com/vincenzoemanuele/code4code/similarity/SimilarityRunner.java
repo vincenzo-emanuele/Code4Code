@@ -9,7 +9,7 @@ import java.io.FileInputStream;
 import java.io.FileReader;
 import java.util.*;
 
-public class SimilarityTester {
+public class SimilarityRunner {
 
     public static List<Language> readLanguages(FileReader stream) {
         Gson gson = new Gson();

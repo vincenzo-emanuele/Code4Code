@@ -1,7 +1,7 @@
 package com.vincenzoemanuele.code4code.controller;
 
 import com.vincenzoemanuele.code4code.complementarity.ComplementarityRunner;
-import com.vincenzoemanuele.code4code.similarity.SimilarityTester;
+import com.vincenzoemanuele.code4code.similarity.SimilarityRunner;
 import com.vincenzoemanuele.code4code.similarity.beans.Language;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -58,7 +58,7 @@ public class LangsSuggestionController {
     public String getSuggestion(@ModelAttribute("form") Form form, Model model) throws Exception {
         List<String> inputLanguages = getLanguages(form);
         List<Map.Entry<String, Double>> complementary = ComplementarityRunner.getComplementarity(inputLanguages);
-        List<Map.Entry<Language, Double>> similar = SimilarityTester.getSimilarity(inputLanguages);
+        List<Map.Entry<Language, Double>> similar = SimilarityRunner.getSimilarity(inputLanguages);
         List<Map.Entry<String, Double>> removeFromComplementary = new ArrayList<>();
         List<Map.Entry<Language, Double>> removeFromSimilarity = new ArrayList<>();
 
