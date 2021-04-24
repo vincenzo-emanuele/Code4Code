@@ -2,9 +2,15 @@ package com.vincenzoemanuele.code4code.complementarity;
 
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
+import com.vincenzoemanuele.code4code.complementarity.beans.Repo;
+import com.vincenzoemanuele.code4code.complementarity.beans.RepoLang;
 import com.vincenzoemanuele.code4code.complementarity.beans.Rule;
 import com.vincenzoemanuele.code4code.complementarity.beans.Wrapper;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVRecord;
+
 import java.io.*;
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class ComplementarityRunner {
@@ -42,7 +48,7 @@ public class ComplementarityRunner {
     public static List<Rule> filterByConfidence (List<Rule> rules){
         List<Rule> output = new ArrayList<>();
         for(Rule r : rules){
-            if(r.getConfidence() > 0.01){
+            if(r.getConfidence() > 0.10){
                 output.add(r);
             }
         }
@@ -68,6 +74,11 @@ public class ComplementarityRunner {
 
     public static List<Map.Entry<String, Double>> getLanguagesList(List<Rule> rules, List<String> inputLangs){
         HashMap<String, Double> suggestedLangs = new HashMap<>();
+        HashSet<String> langs = new HashSet<>();
+        for(Rule r : rules){
+            langs.addAll(r.getSucc());
+        }
+        System.out.println("RULES: " + rules);
         for(Rule r : rules){
             for(String succ : r.getSucc()){
                 if(!inputLangs.contains(succ)) {
@@ -75,6 +86,7 @@ public class ComplementarityRunner {
                         if(suggestedLangs.get(succ) < r.getConfidence()){
                             suggestedLangs.put(succ, r.getConfidence());
                         }
+                        //suggestedLangs.put(succ, suggestedLangs.get(succ) + r.getConfidence());
                     } else {
                         suggestedLangs.put(succ, r.getConfidence());
                     }
@@ -97,19 +109,108 @@ public class ComplementarityRunner {
         return index;
     }
 
+    public static ArrayList<Repo> readRepos() throws Exception{
+        Reader in = new FileReader("src/main/resources/files/repos.csv");
+        ArrayList<Repo> output = new ArrayList<>();
+        Iterable<CSVRecord> records = CSVFormat.DEFAULT.parse(in);
+        for(CSVRecord record : records){
+            Repo repo = new Repo();
+            ArrayList<RepoLang> repoLangs = new ArrayList<>();
+            for (int i = 0; i < record.size(); i+=2) {
+                repo.addLang(record.get(i));
+                repo.addTotalCode(Double.parseDouble(record.get(i+1)));
+                repoLangs.add(new RepoLang(record.get(i), Double.parseDouble(record.get(i+1))));
+            }
+            repo.setRepoLangs(repoLangs);
+            for(RepoLang repoLang : repo.getRepoLangs()){
+                repoLang.setPercentage(repoLang.getPercentage()/repo.getTotalCode());
+            }
+            output.add(repo);
+        }
+
+        return output;
+    }
+
     public static List<Map.Entry<String, Double>> getComplementarity(List<String> inputLangs) throws Exception{
         FileReader reader = new FileReader("src/main/resources/files/langs_json.json");
         wrappers = readWrappers(reader);
         List<Rule> rules = getRelevantRules(inputLangs);
-        System.out.println("BEFORE SORTING: " + rules);
-        //sortRules(rules);
-        System.out.println("AFTER SORTING: " + rules);
         List<Rule> filteredRules = filterByConfidence(rules);
-        System.out.println("AFTER FILTERING: " + filteredRules);
         List<Map.Entry<String, Double>> suggested = getSuggestedLangs(filteredRules, inputLangs);
+        repos = readRepos();
+        ArrayList<Repo> relevantRepos;
+        ArrayList<String> langsToRemove = new ArrayList<>();
+        for(Map.Entry<String, Double> entry : suggested){
+            double mean = 0.0;
+            for(String inputLang : inputLangs){
+                relevantRepos = new ArrayList<>();
+                for(Repo r : repos){
+                    if(r.getLangs().contains(entry.getKey()) && r.getLangs().contains(inputLang)){
+                        relevantRepos.add(r);
+                    }
+                }
+                double sum = 0.0;
+                int numberOfRepos = 0;
+                for(Repo r : relevantRepos){
+                    for(RepoLang repoLang : r.getRepoLangs()){
+                        if(repoLang.getLanguage().equals(entry.getKey())){
+                            sum += repoLang.getPercentage();
+                        }
+                    }
+                    numberOfRepos++;
+                }
+                if(mean < sum/numberOfRepos){
+                    mean = sum/numberOfRepos;
+                }
+                System.out.println(entry.getKey() + " with " + inputLang + "=" + mean);
+            }
+            if(mean < 0.03){
+                langsToRemove.add(entry.getKey());
+            }
+        }
+
+        for(Map.Entry<String, Double> entry : suggested){
+            double mean = 0.0;
+            for(String inputLang : inputLangs){
+                relevantRepos = new ArrayList<>();
+                for(Repo r : repos){
+                    if(r.getLangs().contains(entry.getKey()) && r.getLangs().contains(inputLang)){
+                        relevantRepos.add(r);
+                    }
+                }
+                double sum = 0.0;
+                int numberOfRepos = 0;
+                for(Repo r : relevantRepos){
+                    for(RepoLang repoLang : r.getRepoLangs()){
+                        if(repoLang.getLanguage().equals(inputLang)){
+                            sum += repoLang.getPercentage();
+                        }
+                    }
+                    numberOfRepos++;
+                }
+                if(mean < sum/numberOfRepos){
+                    mean = sum/numberOfRepos;
+                }
+                System.out.println(inputLang + " with " + entry.getKey() + "=" + mean);
+
+            }
+            if(mean < 0.03){
+                langsToRemove.add(entry.getKey());
+            }
+        }
+
+
+        for(int i = 0; i < suggested.size(); i++){
+            if(langsToRemove.contains(suggested.get(i).getKey())){
+                suggested.remove(i);
+                i--;
+            }
+        }
+
         return suggested;
     }
 
     private static List<Wrapper> wrappers;
+    private static ArrayList<Repo> repos = new ArrayList<>();
 
 }

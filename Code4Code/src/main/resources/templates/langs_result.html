@@ -138,6 +138,9 @@
             width: $(this).attr('value') + '%'
         });
     }, 1500);
+    $(".progress-bar").mouseover(function (){
+        $(this).html($(this).attr('value'))
+    })
 </script>
 </body>
 </html>
