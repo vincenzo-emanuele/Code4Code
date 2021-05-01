@@ -164,7 +164,7 @@ public class ComplementarityRunner {
                 }
                 System.out.println(entry.getKey() + " with " + inputLang + "=" + mean);
             }
-            if(mean < 0.03){
+            if(mean < 0.035){
                 langsToRemove.add(entry.getKey());
             }
         }
@@ -194,7 +194,7 @@ public class ComplementarityRunner {
                 System.out.println(inputLang + " with " + entry.getKey() + "=" + mean);
 
             }
-            if(mean < 0.03){
+            if(mean < 0.035){
                 langsToRemove.add(entry.getKey());
             }
         }
