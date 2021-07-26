@@ -55,8 +55,48 @@ public class LangsSuggestionController {
     }
 
     @GetMapping("/suggest")
-    public String getSuggestion(@ModelAttribute("form") Form form, Model model) throws Exception {
-        List<String> inputLanguages = getLanguages(form);
+    public String getSuggestion(@ModelAttribute("form") Form form, Model model) throws Exception{
+        inputLanguages = getLanguages(form);
+        List<Map.Entry<String, Double>> complementaryLanguages = ComplementarityRunner.getComplementarity(inputLanguages);
+        List<Map.Entry<Language, Double>> similarLanguages = SimilarityRunner.getSimilarity(inputLanguages);
+        removeDuplicates(complementaryLanguages, similarLanguages);
+        model.addAttribute("inputLanguages", inputLanguages);
+        model.addAttribute("similar", similarLanguages);
+        model.addAttribute("complementary", complementaryLanguages);
+        return "langs_result";
+    }
+
+    public void removeDuplicates(List<Map.Entry<String, Double>> complementaryLanguages, List<Map.Entry<Language, Double>> similarLanguages){
+        List<Map.Entry<String, Double>> removeFromComplementary = new ArrayList<>();
+        List<Map.Entry<Language, Double>> removeFromSimilarity = new ArrayList<>();
+        for (Map.Entry<Language, Double> languageDoubleEntry : similarLanguages) {
+            for (Map.Entry<String, Double> stringDoubleEntry : complementaryLanguages) {
+                if (languageDoubleEntry.getKey().getName().equals(stringDoubleEntry.getKey())) {
+                    if (languageDoubleEntry.getValue() > stringDoubleEntry.getValue()) {
+                        removeFromComplementary.add(stringDoubleEntry);
+                    } else {
+                        removeFromSimilarity.add(languageDoubleEntry);
+                    }
+                }
+            }
+        }
+        complementaryLanguages.removeAll(removeFromComplementary);
+        similarLanguages.removeAll(removeFromSimilarity);
+        complementaryLanguages.sort(new Comparator<Map.Entry<String, Double>>() {
+            @Override
+            public int compare(Map.Entry<String, Double> o1, Map.Entry<String, Double> o2) {
+                return o2.getValue().compareTo(o1.getValue());
+            }
+        });
+        similarLanguages.sort(new Comparator<Map.Entry<Language, Double>>() {
+            @Override
+            public int compare(Map.Entry<Language, Double> o1, Map.Entry<Language, Double> o2) {
+                return o2.getValue().compareTo(o1.getValue());
+            }
+        });
+    }
+
+    /*public List<Map.Entry<String, Double>> getComplementaryLanguages(List<String> inputLanguages) throws Exception {
         List<Map.Entry<String, Double>> complementary = ComplementarityRunner.getComplementarity(inputLanguages);
         List<Map.Entry<Language, Double>> similar = SimilarityRunner.getSimilarity(inputLanguages);
         List<Map.Entry<String, Double>> removeFromComplementary = new ArrayList<>();
@@ -91,6 +131,8 @@ public class LangsSuggestionController {
         model.addAttribute("similar", similar);
         model.addAttribute("complementary", complementary);
         return "langs_result";
-    }
+    }*/
+
+    List<String> inputLanguages = new ArrayList<>();
 
 }

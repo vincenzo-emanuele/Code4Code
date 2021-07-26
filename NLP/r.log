@@ -1,0 +1,70 @@
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/W32TeX) (preloaded format=latex 2021.3.23)  16 JUL 2021 11:27
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**is a document preparation system.
+(c:/texlive/2020/texmf-dist/tex/latex/tools/r.tex
+! Interruption.
+<to be read again> 
+                   \begingroup 
+l.1 
+    %%
+? Ruby on Rails is a web application framework written in Ruby.
+OK, entering \nonstopmode...
+LaTeX2e <2020-10-01> patch level 4
+L3 programming layer <2021-02-18> File ignored
+)
+
+! LaTeX Error: Missing \begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+<*> is a
+         document preparation system.
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+Missing character: There is no a in font nullfont!
+Missing character: There is no d in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no u in font nullfont!
+Missing character: There is no m in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no p in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no p in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no y in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no m in font nullfont!
+Missing character: There is no . in font nullfont!
+! Emergency stop.
+<*> is a document preparation system.
+                                     
+*** (job aborted, no legal \end found)
+
+ 
+Here is how much of TeX's memory you used:
+ 40 strings out of 479015
+ 619 string characters out of 5863112
+ 283625 words of memory out of 5000000
+ 17598 multiletter control sequences out of 15000+600000
+ 403430 words of font info for 27 fonts, out of 8000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 13i,0n,15p,149b,14s stack positions out of 5000i,500n,10000p,200000b,80000s
+No pages of output.
