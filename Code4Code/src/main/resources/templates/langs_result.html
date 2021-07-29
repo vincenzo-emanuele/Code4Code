@@ -48,10 +48,10 @@
 </div>
 
 <div class="container border mx-auto my-2">
-    <h3 th:if="${complementary.size() != 0}" class="text-center">Linguaggi spesso usati con quelli che conosci</h3>
+    <h3 th:if="${complementaryLanguages.size() != 0}" class="text-center">Linguaggi spesso usati con quelli che conosci</h3>
     <div class="container">
         <div class="row mt-2 mb-2">
-            <div th:each="item: ${complementary}" class="col-3">
+            <div th:each="item: ${complementaryLanguages}" class="col-3">
                 <div class="card card-custom justify-content-md-center mb-2">
                     <div class="row">
                         <div class="col-3 align-self-center">
@@ -90,10 +90,10 @@
         </div>
     </div>
 
-    <h3 th:if="${similar.size() != 0}" class="text-center">Linguaggi simili a quelli che conosci</h3>
+    <h3 th:if="${similarLanguages.size() != 0}" class="text-center">Linguaggi simili a quelli che conosci</h3>
     <div class="container">
         <div class="row mt-2 mb-2">
-            <div th:each="item: ${similar}" class="col-3">
+            <div th:each="item: ${similarLanguages}" class="col-3">
                 <div class="card card-custom justify-content-md-center mb-2">
                     <div class="row">
                         <div class="col-3 align-self-center">
@@ -131,7 +131,42 @@
             </div>
         </div>
     </div>
+    <h3 th:if="${suggestedFrameworks.size() != 0}" class="text-center">Framework suggeriti</h3>
+    <div class="container">
+        <div class="row mt-2 mb-2">
+            <div th:each="item: ${suggestedFrameworks}" class="col-3">
+                <div class="card card-custom justify-content-md-center mb-2">
+                    <div class="row">
+                        <div class="col-3 align-self-center">
+                            <img th:src="@{${'images/' + item.get(0) + '.jpg'}}" style="padding:2px;" class="img-custom" alt="...">
+                        </div>
+                        <div class="col-6 align-self-center">
+                            <div class="card-body text-center">
+                                <label th:text="${item.get(0)}" class="form-check-label"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div th:if="${item.get(1)*100 <= 30}">
+                        <div class="progress">
+                            <div class="progress-bar bg-danger" role="progressbar" style="width:0" th:value="${item.get(1)*100}" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                    <div th:if="${item.get(1)*100 > 30 && item.get(1)*100 < 60}">
+                        <div class="progress">
+                            <div class="progress-bar bg-warning" role="progressbar" style="width:0" th:value="${item.get(1)*100}" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                    <div th:if="${item.get(1)*100 >= 60}">
+                        <div class="progress">
+                            <div class="progress-bar bg-success" role="progressbar" style="width:0" th:value="${item.get(1)*100}" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 </div>
+
 <script type="text/javascript">
     $(".progress-bar").each(function() {
         $(this).animate({

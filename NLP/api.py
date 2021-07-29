@@ -10,21 +10,22 @@ nlp.load_model()
 @app.route('/nlp', methods=['GET'])
 def getNlp():
     inputTechnologies = extractFromRequest(request)
+    print(inputTechnologies)
     outputTechnologies = []
     for inputTechnology in inputTechnologies:
         suggested = nlp.getMostSimilar(inputTechnology)
+        print(suggested)
         alreadyInserted = [item[0] for item in outputTechnologies]
         for tec in suggested:
             if tec[0] in alreadyInserted: 
                 elem = [item for item in outputTechnologies if item[0] == tec[0]]
-                print(type(elem))
-                print(type(tec))
                 if elem[0][1] < tec[1]:
                     outputTechnologies.remove(elem[0])
                     outputTechnologies.append(tec)          
             else:
                 outputTechnologies.append(tec)
-    return str(outputTechnologies)
+    print(outputTechnologies)
+    return str(json.dumps(outputTechnologies))
 
 def extractFromRequest(request):
     jsonTechnologies = request.args['technologies']

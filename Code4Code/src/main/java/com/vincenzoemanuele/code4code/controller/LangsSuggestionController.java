@@ -1,6 +1,7 @@
 package com.vincenzoemanuele.code4code.controller;
 
 import com.vincenzoemanuele.code4code.complementarity.ComplementarityRunner;
+import com.vincenzoemanuele.code4code.nlp.NLPRunner;
 import com.vincenzoemanuele.code4code.similarity.SimilarityRunner;
 import com.vincenzoemanuele.code4code.similarity.beans.Language;
 import org.springframework.stereotype.Controller;
@@ -21,6 +22,38 @@ public class LangsSuggestionController {
     @GetMapping("/home")
     public String getHome(Model model) throws Exception{
         return "index";
+    }
+
+    private List<String> getFrameworks(Form form){
+        List<String> inputFrameworks = new ArrayList<>();
+        if(form.AJAX) inputFrameworks.add("ajax");
+        if(form.Amp) inputFrameworks.add("amp");
+        if(form.Android) inputFrameworks.add("android");
+        if(form.Angular) inputFrameworks.add("angular");
+        if(form.ASPDOTNET) inputFrameworks.add("aspdotnet");
+        if(form.Bootstrap) inputFrameworks.add("bootstrap");
+        if(form.Django) inputFrameworks.add("django");
+        if(form.Electron) inputFrameworks.add("electron");
+        if(form.Ember) inputFrameworks.add("ember");
+        if(form.Express) inputFrameworks.add("express");
+        if(form.Firebase) inputFrameworks.add("firebase");
+        if(form.Flask) inputFrameworks.add("flask");
+        if(form.jQuery) inputFrameworks.add("jquery");
+        if(form.Keras) inputFrameworks.add("keras");
+        if(form.Koa) inputFrameworks.add("koa");
+        if(form.Node) inputFrameworks.add("node");
+        if(form.RubyOnRails) inputFrameworks.add("rails");
+        if(form.Ratchet) inputFrameworks.add("ratchet");
+        if(form.React) inputFrameworks.add("react");
+        if(form.ReactNative) inputFrameworks.add("native");
+        if(form.ReactiveUI) inputFrameworks.add("reactiveui");
+        if(form.Scikit) inputFrameworks.add("scikit");
+        if(form.Spring) inputFrameworks.add("spring");
+        if(form.Symfony) inputFrameworks.add("symfony");
+        if(form.TensorFlow) inputFrameworks.add("tensorflow");
+        if(form.Thymeleaf) inputFrameworks.add("thymeleaf");
+        if(form.Vue) inputFrameworks.add("vue");
+        return inputFrameworks;
     }
 
     private List<String> getLanguages(Form form){
@@ -57,12 +90,20 @@ public class LangsSuggestionController {
     @GetMapping("/suggest")
     public String getSuggestion(@ModelAttribute("form") Form form, Model model) throws Exception{
         inputLanguages = getLanguages(form);
+        inputFrameworks = getFrameworks(form);
         List<Map.Entry<String, Double>> complementaryLanguages = ComplementarityRunner.getComplementarity(inputLanguages);
         List<Map.Entry<Language, Double>> similarLanguages = SimilarityRunner.getSimilarity(inputLanguages);
         removeDuplicates(complementaryLanguages, similarLanguages);
+        ArrayList<String> languagesAndFrameworks = new ArrayList<>(inputLanguages);
+        languagesAndFrameworks.addAll(inputFrameworks);
+        List<List<Map.Entry<String, Double>>> suggestedFrameworks = NLPRunner.getSuggestedFrameworks(languagesAndFrameworks);
+        System.out.println(complementaryLanguages);
+        System.out.println(suggestedFrameworks);
         model.addAttribute("inputLanguages", inputLanguages);
-        model.addAttribute("similar", similarLanguages);
-        model.addAttribute("complementary", complementaryLanguages);
+        model.addAttribute("inputFrameworks", inputFrameworks);
+        model.addAttribute("similarLanguages", similarLanguages);
+        model.addAttribute("complementaryLanguages", complementaryLanguages);
+        model.addAttribute("suggestedFrameworks", suggestedFrameworks);
         return "langs_result";
     }
 
@@ -82,18 +123,8 @@ public class LangsSuggestionController {
         }
         complementaryLanguages.removeAll(removeFromComplementary);
         similarLanguages.removeAll(removeFromSimilarity);
-        complementaryLanguages.sort(new Comparator<Map.Entry<String, Double>>() {
-            @Override
-            public int compare(Map.Entry<String, Double> o1, Map.Entry<String, Double> o2) {
-                return o2.getValue().compareTo(o1.getValue());
-            }
-        });
-        similarLanguages.sort(new Comparator<Map.Entry<Language, Double>>() {
-            @Override
-            public int compare(Map.Entry<Language, Double> o1, Map.Entry<Language, Double> o2) {
-                return o2.getValue().compareTo(o1.getValue());
-            }
-        });
+        complementaryLanguages.sort((o1, o2) -> o2.getValue().compareTo(o1.getValue()));
+        similarLanguages.sort((o1, o2) -> o2.getValue().compareTo(o1.getValue()));
     }
 
     /*public List<Map.Entry<String, Double>> getComplementaryLanguages(List<String> inputLanguages) throws Exception {
@@ -134,5 +165,6 @@ public class LangsSuggestionController {
     }*/
 
     List<String> inputLanguages = new ArrayList<>();
+    List<String> inputFrameworks = new ArrayList<>();
 
 }
