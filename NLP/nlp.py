@@ -3,10 +3,11 @@ from gensim import utils
 import gensim.models
 
 def getMostSimilar(technology):
-    similar = list(model.wv.most_similar(positive=[technology], topn=1000))
+    try:
+        similar = list(model.wv.most_similar(positive=[technology], topn=1000))
+    except:
+        return []
     #similar_dict = {similar[i][0] : similar[i][1] for i in range (0, len(similar))}
-    #print(type(similar_dict))
-    #print(similar_dict)
     filtered = filter(lambda framework: framework[0] in frameworks and framework[1] > 0.50, similar)
     return list(filtered)
 
@@ -25,7 +26,8 @@ def main():
     load_model()
     while True:
         technology = input("Inserisci la tecnologia\n")
-        getMostSimilar(technology)
+        suggested = getMostSimilar(technology)
+        print(suggested)
 
 if __name__ == "__main__":
     main()

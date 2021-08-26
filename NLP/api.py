@@ -9,7 +9,13 @@ nlp.load_model()
 
 @app.route('/nlp', methods=['GET'])
 def getNlp():
-    inputTechnologies = extractFromRequest(request)
+    input = extractFromRequest(request)
+    inputTechnologies = [item.lower() for item in input]
+    for i in range(len(inputTechnologies)):
+        if inputTechnologies[i] == "c++":
+            inputTechnologies[i] = "cpp"
+        elif inputTechnologies[i] == "c#":
+            inputTechnologies[i] = "csharp"
     print(inputTechnologies)
     outputTechnologies = []
     for inputTechnology in inputTechnologies:

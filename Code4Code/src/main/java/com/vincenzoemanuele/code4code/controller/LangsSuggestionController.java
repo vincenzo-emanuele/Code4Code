@@ -26,6 +26,7 @@ public class LangsSuggestionController {
 
     private List<String> getFrameworks(Form form){
         List<String> inputFrameworks = new ArrayList<>();
+        if(form.DOTNET) inputFrameworks.add("dotnet");
         if(form.AJAX) inputFrameworks.add("ajax");
         if(form.Amp) inputFrameworks.add("amp");
         if(form.Android) inputFrameworks.add("android");
